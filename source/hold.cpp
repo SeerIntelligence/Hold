@@ -1,11 +1,11 @@
 #include <fmt/format.h>
-#include <greeter/greeter.h>
+#include <hold/hold.h>
 
-using namespace greeter;
+using namespace hold;
 
-Greeter::Greeter(std::string _name) : name(std::move(_name)) {}
+Hold::Hold(std::string _name) : name(std::move(_name)) {}
 
-std::string Greeter::greet(LanguageCode lang) const {
+std::string Hold::greet(LanguageCode lang) const {
   switch (lang) {
     default:
     case LanguageCode::EN:
