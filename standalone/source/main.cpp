@@ -6,48 +6,51 @@
 #include <string>
 #include <unordered_map>
 
-auto main(int argc, char** argv) -> int {
-  const std::unordered_map<std::string, hold::LanguageCode> languages{
-      {"en", hold::LanguageCode::EN},
-      {"de", hold::LanguageCode::DE},
-      {"es", hold::LanguageCode::ES},
-      {"fr", hold::LanguageCode::FR},
-  };
+auto main() -> int {
+  std::size_t memorySize = 1024;  // 1 KB of virtual memory
+  VirtualMemory vm(memorySize);
 
-  cxxopts::Options options(*argv, "A program to welcome the world!");
-
-  std::string language;
-  std::string name;
-
-  // clang-format off
-  options.add_options()
-    ("h,help", "Show help")
-    ("v,version", "Print the current version number")
-    ("n,name", "Name to greet", cxxopts::value(name)->default_value("World"))
-    ("l,lang", "Language code to use", cxxopts::value(language)->default_value("en"))
-  ;
-  // clang-format on
-
-  auto result = options.parse(argc, argv);
-
-  if (result["help"].as<bool>()) {
-    std::cout << options.help() << std::endl;
-    return 0;
+  // Allocate 256 bytes
+  void* ptr1 = vm.malloc(256);
+  if (ptr1) {
+    std::cout << "Allocated 256 bytes." << std::endl;
+  } else {
+    std::cout << "Failed to allocate 256 bytes." << std::endl;
   }
 
-  if (result["version"].as<bool>()) {
-    std::cout << "Greeter, version " << HOLD_VERSION << std::endl;
-    return 0;
+  // Allocate 128 bytes
+  void* ptr2 = vm.malloc(128);
+  if (ptr2) {
+    std::cout << "Allocated 128 bytes." << std::endl;
+  } else {
+    std::cout << "Failed to allocate 128 bytes." << std::endl;
   }
 
-  auto langIt = languages.find(language);
-  if (langIt == languages.end()) {
-    std::cerr << "unknown language code: " << language << std::endl;
-    return 1;
+  // Free the first 256 bytes
+  vm.free(ptr1);
+  std::cout << "Freed 256 bytes." << std::endl;
+
+  // Reallocate the second block to 512 bytes
+  void* ptr3 = vm.realloc(ptr2, 512);
+  if (ptr3) {
+    std::cout << "Reallocated 128 bytes to 512 bytes." << std::endl;
+  } else {
+    std::cout << "Failed to reallocate 128 bytes to 512 bytes." << std::endl;
   }
 
-  hold::Hold hold(name);
-  std::cout << hold.greet(langIt->second) << std::endl;
+  // Allocate 64 zero-initialized bytes
+  void* ptr4 = vm.calloc(64, sizeof(char));
+  if (ptr4) {
+    std::cout << "Allocated 64 zero-initialized bytes." << std::endl;
+  } else {
+    std::cout << "Failed to allocate 64 zero-initialized bytes." << std::endl;
+  }
+
+  // Free all remaining allocations
+  vm.free(ptr3);
+  std::cout << "Freed 512 bytes." << std::endl;
+  vm.free(ptr4);
+  std::cout << "Freed 64 zero-initialized bytes." << std::endl;
 
   return 0;
 }
