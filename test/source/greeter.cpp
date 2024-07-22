@@ -14,4 +14,3 @@ TEST_CASE("Greeter") {
   CHECK(hold.greet(LanguageCode::ES) == "¡Hola Tests!");
   CHECK(hold.greet(LanguageCode::FR) == "Bonjour Tests!");
 }
-

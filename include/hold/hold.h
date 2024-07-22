@@ -28,4 +28,4 @@ namespace hold {
     std::string greet(LanguageCode lang = LanguageCode::EN) const;
   };
 
-}  // namespace greeter
+}  // namespace hold
