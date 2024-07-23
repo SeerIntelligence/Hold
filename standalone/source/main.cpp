@@ -1,4 +1,5 @@
 #include <hold/hold.h>
+#include <hold/memoryOP.h>
 #include <hold/version.h>
 
 #include <cxxopts.hpp>
@@ -51,6 +52,29 @@ auto main() -> int {
   std::cout << "Freed 512 bytes." << std::endl;
   vm.free(ptr4);
   std::cout << "Freed 64 zero-initialized bytes." << std::endl;
+
+  ShuffleArray shuffler;
+
+  std::vector<uint8_t> data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+  std::cout << "Original data: ";
+  for (const auto& byte : data) {
+    std::cout << static_cast<int>(byte) << " ";
+  }
+  std::cout << std::endl;
+
+  std::vector<int> code = shuffler.shuffle(data);
+  std::cout << "Shuffled data: ";
+  for (const auto& byte : data) {
+    std::cout << static_cast<int>(byte) << " ";
+  }
+  std::cout << std::endl;
+
+  shuffler.reassemble(data, code);
+  std::cout << "Reassembled data: ";
+  for (const auto& byte : data) {
+    std::cout << static_cast<int>(byte) << " ";
+  }
+  std::cout << std::endl;
 
   return 0;
 }
