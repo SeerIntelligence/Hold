@@ -7,6 +7,7 @@ TEST_CASE("Testing NumberOperations class") {
   // Where did I go wrong? What should I have done instead?
   // When your mind starts looking for answers to these,
   // is when you realize you are in deep trouble.
+
   SUBCASE("Test isEven") { CHECK(numOp.isEven() == false); }
 
   SUBCASE("Test isOdd") { CHECK(numOp.isOdd() == true); }
