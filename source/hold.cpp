@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <stdexcept>
+#include <unordered_map>
 
 VirtualMemory::VirtualMemory(std::size_t size) : memorySize(size) {
   memory = std::malloc(size);
@@ -101,4 +102,35 @@ void VirtualMemory::free(void* ptr) {
       current = current->next;
     }
   }
+}
+
+void Hold::write(const void* value, size_t size) {
+  const uint8_t* bytes = reinterpret_cast<const uint8_t*>(value);
+  data.insert(data.end(), bytes, bytes + size);
+}
+
+const uint8_t* Hold::read() const { return data.data(); }
+
+size_t Hold::size() const { return data.size(); }
+
+double Hold::entropy() const {
+  if (data.empty()) return 0.0;
+
+  std::unordered_map<uint8_t, size_t> frequency;
+  for (uint8_t byte : data) {
+    ++frequency[byte];
+  }
+
+  double entropy = 0.0;
+  // TODO maybe don't use c++17 here?
+  for (const auto& [byte, count] : frequency) {
+    double p = static_cast<double>(count) / data.size();
+    entropy -= p * std::log2(p);
+  }
+
+  return entropy;
+}
+double Hold::theoreticalMaxCompression() {
+  double t = Hold::entropy() * Hold::size();
+  return t / 8;
 }

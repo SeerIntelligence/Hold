@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <string>
+#include <vector>
 
 class VirtualMemory {
 public:
@@ -33,3 +34,24 @@ private:
   VirtualMemory(const VirtualMemory&) = delete;
   VirtualMemory& operator=(const VirtualMemory&) = delete;
 };
+class Hold {
+private:
+  std::vector<uint8_t> data;
+
+  double entropy() const;
+
+public:
+  template <typename T> void write(const T& value);
+
+  void write(const void* value, size_t size);
+
+  const uint8_t* read() const;
+
+  size_t size() const;
+  double theoreticalMaxCompression();
+};
+
+template <typename T> void Hold::write(const T& value) {
+  const uint8_t* bytes = reinterpret_cast<const uint8_t*>(&value);
+  data.insert(data.end(), bytes, bytes + sizeof(T));
+}
