@@ -49,6 +49,7 @@ public:
 
   size_t size() const;
   double theoreticalMaxCompression();
+  std::vector<int> maxSlices();
 };
 
 template <typename T> void Hold::write(const T& value) {

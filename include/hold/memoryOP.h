@@ -1,7 +1,8 @@
+#include <hold/hold.h>
+
 #include <algorithm>
 #include <random>
 #include <vector>
-
 class ShuffleArray {
 public:
   ShuffleArray();
@@ -11,4 +12,13 @@ public:
 
 private:
   std::mt19937 rng;
+};
+
+class Compressor : Hold {
+private:
+  int bytecount;
+
+public:
+  Compressor();
+  virtual ~Compressor();
 };

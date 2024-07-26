@@ -130,3 +130,4 @@ TEST_CASE("Testing theoreticalMaxCompression calculation") {
   }
   // TODO TESTCASE for pre-calculated entropies (accuracy)
 }
+// TODO: testcase for Hold::maxSlices()

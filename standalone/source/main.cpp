@@ -1,12 +1,17 @@
 #include <hold/hold.h>
 #include <hold/memoryOP.h>
+#include <hold/numberoperations.h>
 #include <hold/version.h>
 
 #include <cxxopts.hpp>
+#include <gzip/compress.hpp>
+#include <gzip/config.hpp>
+#include <gzip/decompress.hpp>
+#include <gzip/utils.hpp>
+#include <gzip/version.hpp>
 #include <iostream>
 #include <string>
 #include <unordered_map>
-
 auto main() -> int {
   std::size_t memorySize = 1024;  // 1 KB of virtual memory
   VirtualMemory vm(memorySize);
@@ -75,6 +80,18 @@ auto main() -> int {
     std::cout << static_cast<int>(byte) << " ";
   }
   std::cout << std::endl;
+
+  std::vector<int> list = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+  // Find the partition sizes
+  std::vector<int> partitionSizes = Partition::findPartitionSizes(list);
+
+  // Generate the partitions based on the found sizes
+  std::vector<std::vector<std::vector<int>>> partitions
+      = Partition::generatePartitions(list, partitionSizes);
+
+  std::cout << "Partitions: " << std::endl;
+  Partition::printPartitions(partitions);
 
   return 0;
 }

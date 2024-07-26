@@ -1,5 +1,6 @@
 #include <fmt/format.h>
 #include <hold/hold.h>
+#include <hold/numberoperations.h>
 
 #include <cstdlib>
 #include <cstring>
@@ -134,3 +135,5 @@ double Hold::theoreticalMaxCompression() {
   double t = Hold::entropy() * Hold::size();
   return t / 8;
 }
+// FIXME: this is not particularly great code
+std::vector<int> Hold::maxSlices() { return Partition::n_findPartitionSizes(Hold::size()); }
